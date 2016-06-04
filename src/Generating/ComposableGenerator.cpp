@@ -440,7 +440,7 @@ void cComposableGenerator::InitFinishGens(cIniFile & a_IniFile)
 		}
 		else if (NoCaseCompare(finisher, "OverworldClumpFlowers") == 0)
 		{
-			std::vector<cFinishGenClumpTopBlock::BiomeInfo> flowers = cFinishGenClumpTopBlock::ParseIniFile(a_IniFile, "OverworldClumpFlowers");
+			auto flowers = cFinishGenClumpTopBlock::ParseIniFile(a_IniFile, "OverworldClumpFlowers");
 			m_FinishGens.push_back(cFinishGenPtr(new cFinishGenClumpTopBlock(Seed, flowers)));
 		}
 		else if (NoCaseCompare(finisher, "PieceStructures") == 0)

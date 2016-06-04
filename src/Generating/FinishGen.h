@@ -116,9 +116,9 @@ public:
 		std::swap(a_BlockList, m_FlowersPerBiome);
 	}
 
-	/** Parses a string and returns a vector with a length of biMaxVariantBiome.
+	/** Parses a string and puts a vector with a length of biMaxVariantBiome in a_Output.
 	The format of the string is "<Biomes separated with a comma>;<Blocks separated with a comma>". This can also be repeated with a | */
-	static void ParseConfigurationString(AString a_String, std::vector<BiomeInfo> & a_Output = std::vector<BiomeInfo>());
+	static void ParseConfigurationString(AString a_String, std::vector<BiomeInfo> & a_Output);
 
 	/** Parses an inifile in search for all clumps */
 	static std::vector<BiomeInfo> ParseIniFile(cIniFile & a_IniFile, AString a_ClumpPrefix);
@@ -127,8 +127,13 @@ protected:
 	cNoise m_Noise;
 	std::vector<BiomeInfo> m_FlowersPerBiome;
 
+	/** The maximum number of foliage per clump */
 	const int MAX_NUM_FOLIAGE = 8;
+
+	/** The mininum number of foliage per clump */
 	const int MIN_NUM_FOLIAGE = 4;
+
+	/** The maximum range a foliage can be placed from the center of the clump */
 	const int RANGE_FROM_CENTER = 5;
 
 	void TryPlaceFoliageClump(cChunkDesc & a_ChunkDesc, int a_RelX, int a_RelZ, BLOCKTYPE a_BlockType, NIBBLETYPE a_BlockMeta, bool a_IsDoubleTall);

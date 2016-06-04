@@ -223,6 +223,8 @@ void cFinishGenClumpTopBlock::GenFinish(cChunkDesc & a_ChunkDesc)
 			TotalWeight += Block.m_Weight;
 		}
 
+		// Prevent division by 0
+		TotalWeight = TotalWeight != 0 ? TotalWeight : 1;
 		int Weight = BlockVal % TotalWeight;
 		for (const auto & Block : PossibleBlocks)
 		{
@@ -276,7 +278,7 @@ void cFinishGenClumpTopBlock::TryPlaceFoliageClump(cChunkDesc & a_ChunkDesc, int
 void cFinishGenClumpTopBlock::ParseConfigurationString(AString a_RawClumpInfo, std::vector<BiomeInfo> & a_Output)
 {
 	// Initialize the vector for all biomes.
-	for (int i = a_Output.size(); i < biMaxVariantBiome; i++)
+	for (int i = a_Output.size(); i < static_cast<int>(biMaxVariantBiome); i++)
 	{
 		a_Output.push_back(BiomeInfo());
 	}
@@ -286,7 +288,7 @@ void cFinishGenClumpTopBlock::ParseConfigurationString(AString a_RawClumpInfo, s
 	// Information about a clump is divided in 2 parts. The biomes they can be in and the blocks that can be placed.
 	if (ClumpInfo.size() != 2)
 	{
-		LOGWARNING("OverworldClumpFoliage: Data missing for \"%s\". Please divide biome and blocks with a semi colon", a_RawClumpInfo);
+		LOGWARNING("OverworldClumpFoliage: Data missing for \"%s\". Please divide biome and blocks with a semi colon", a_RawClumpInfo.c_str());
 		return;
 	}
 
@@ -300,7 +302,7 @@ void cFinishGenClumpTopBlock::ParseConfigurationString(AString a_RawClumpInfo, s
 		EMCSBiome Biome = StringToBiome(BiomeName);
 		if (Biome == biInvalidBiome)
 		{
-			LOGWARNING("Biome \"%s\" is invalid.", BiomeName);
+			LOGWARNING("Biome \"%s\" is invalid.", BiomeName.c_str());
 			continue;
 		}
 
@@ -310,13 +312,13 @@ void cFinishGenClumpTopBlock::ParseConfigurationString(AString a_RawClumpInfo, s
 			int MinNumClump = 1;
 			if (!StringToInteger(BiomeInfo[1], MinNumClump))
 			{
-				LOGWARNING("OverworldClumpFoliage: Invalid data in \"%s\". Second parameter is either not existing or a number", RawBiomeInfo);
+				LOGWARNING("OverworldClumpFoliage: Invalid data in \"%s\". Second parameter is either not existing or a number", RawBiomeInfo.c_str());
 				continue;
 			}
-			a_Output[Biome].m_MinNumClumpsPerChunk = MinNumClump;
+			a_Output[static_cast<int>(Biome)].m_MinNumClumpsPerChunk = MinNumClump;
 
 			// In case the minimum number is higher than the current maximum value we change the max to the minimum value.
-			a_Output[Biome].m_MaxNumClumpsPerChunk = std::max(MinNumClump, a_Output[Biome].m_MaxNumClumpsPerChunk);
+			a_Output[static_cast<int>(Biome)].m_MaxNumClumpsPerChunk = std::max(MinNumClump, a_Output[Biome].m_MaxNumClumpsPerChunk);
 		}
 		else if (BiomeInfo.size() == 3)
 		{
@@ -324,12 +326,12 @@ void cFinishGenClumpTopBlock::ParseConfigurationString(AString a_RawClumpInfo, s
 			int MinNumClumps = 0, MaxNumClumps = 1;
 			if (!StringToInteger(BiomeInfo[1], MinNumClumps) || !StringToInteger(BiomeInfo[2], MaxNumClumps))
 			{
-				LOGWARNING("Invalid data in \"%s\". Second parameter is either not existing or a number", RawBiomeInfo);
+				LOGWARNING("Invalid data in \"%s\". Second parameter is either not existing or a number", RawBiomeInfo.c_str());
 				continue;
 			}
 
-			a_Output[Biome].m_MaxNumClumpsPerChunk = MaxNumClumps + 1;
-			a_Output[Biome].m_MinNumClumpsPerChunk = MinNumClumps;
+			a_Output[static_cast<int>(Biome)].m_MaxNumClumpsPerChunk = MaxNumClumps + 1;
+			a_Output[static_cast<int>(Biome)].m_MinNumClumpsPerChunk = MinNumClumps;
 		}
 
 		// TODO: Make the weight configurable.
@@ -338,12 +340,12 @@ void cFinishGenClumpTopBlock::ParseConfigurationString(AString a_RawClumpInfo, s
 			cItem Block = cItem();
 			if (!StringToItem(BlockName, Block) && IsValidBlock(Block.m_ItemType))
 			{
-				LOGWARNING("Block \"%s\" is invalid", BlockName);
+				LOGWARNING("Block \"%s\" is invalid", BlockName.c_str());
 				continue;
 			}
 
 			FoliageInfo info = FoliageInfo(static_cast<BLOCKTYPE>(Block.m_ItemType), static_cast<NIBBLETYPE>(Block.m_ItemDamage), 100);
-			a_Output[Biome].m_Blocks.push_back(info);
+			a_Output[static_cast<int>(Biome)].m_Blocks.push_back(info);
 		}
 	}
 }
@@ -354,6 +356,9 @@ void cFinishGenClumpTopBlock::ParseConfigurationString(AString a_RawClumpInfo, s
 
 std::vector<cFinishGenClumpTopBlock::BiomeInfo> cFinishGenClumpTopBlock::ParseIniFile(cIniFile & a_IniFile, AString a_ClumpPrefix)
 {
+	// Also check dashes in case we will get more configuration options with the same prefix.
+	a_ClumpPrefix += "-";
+
 	std::vector<cFinishGenClumpTopBlock::BiomeInfo> foliage;
 	int NumGeneratorValues = a_IniFile.GetNumValues("Generator");
 	int GeneratorKeyId = a_IniFile.FindKey("Generator");
@@ -362,7 +367,7 @@ std::vector<cFinishGenClumpTopBlock::BiomeInfo> cFinishGenClumpTopBlock::ParseIn
 		AString ValueName = a_IniFile.GetValueName("Generator", i);
 		if (ValueName.substr(0, a_ClumpPrefix.size()) == a_ClumpPrefix)
 		{
-			AString & RawClump = a_IniFile.GetValue(GeneratorKeyId, i);
+			AString RawClump = a_IniFile.GetValue(GeneratorKeyId, i);
 			cFinishGenClumpTopBlock::ParseConfigurationString(RawClump, foliage);
 		}
 	}
