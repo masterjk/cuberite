@@ -38,19 +38,19 @@ cRedstoneHandler * cIncrementalRedstoneSimulator::CreateComponent(cWorld & a_Wor
 		case E_BLOCK_DETECTOR_RAIL:
 		case E_BLOCK_POWERED_RAIL:
 		{
-			static cPoweredRailHandler ComponentHandler(a_World);
+			static thread_local cPoweredRailHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		case E_BLOCK_ACTIVE_COMPARATOR:
 		case E_BLOCK_INACTIVE_COMPARATOR:
 		{
-			static cRedstoneComparatorHandler ComponentHandler(a_World);
+			static thread_local cRedstoneComparatorHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		case E_BLOCK_DISPENSER:
 		case E_BLOCK_DROPPER:
 		{
-			static cDropSpenserHandler ComponentHandler(a_World);
+			static thread_local cDropSpenserHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		case E_BLOCK_HEAVY_WEIGHTED_PRESSURE_PLATE:
@@ -58,93 +58,93 @@ cRedstoneHandler * cIncrementalRedstoneSimulator::CreateComponent(cWorld & a_Wor
 		case E_BLOCK_STONE_PRESSURE_PLATE:
 		case E_BLOCK_WOODEN_PRESSURE_PLATE:
 		{
-			static cPressurePlateHandler ComponentHandler(a_World);
+			static thread_local cPressurePlateHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		case E_BLOCK_FENCE_GATE:
 		case E_BLOCK_IRON_TRAPDOOR:
 		case E_BLOCK_TRAPDOOR:
 		{
-			static cSmallGateHandler ComponentHandler(a_World);
+			static thread_local cSmallGateHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		case E_BLOCK_REDSTONE_LAMP_OFF:
 		case E_BLOCK_REDSTONE_LAMP_ON:
 		{
-			static cRedstoneLampHandler ComponentHandler(a_World);
+			static thread_local cRedstoneLampHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		case E_BLOCK_REDSTONE_REPEATER_OFF:
 		case E_BLOCK_REDSTONE_REPEATER_ON:
 		{
-			static cRedstoneRepeaterHandler ComponentHandler(a_World);
+			static thread_local cRedstoneRepeaterHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		case E_BLOCK_REDSTONE_TORCH_OFF:
 		case E_BLOCK_REDSTONE_TORCH_ON:
 		{
-			static cRedstoneTorchHandler ComponentHandler(a_World);
+			static thread_local cRedstoneTorchHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		case E_BLOCK_PISTON:
 		case E_BLOCK_STICKY_PISTON:
 		{
-			static cPistonHandler ComponentHandler(a_World);
+			static thread_local cPistonHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		case E_BLOCK_LEVER:
 		case E_BLOCK_STONE_BUTTON:
 		case E_BLOCK_WOODEN_BUTTON:
 		{
-			static cRedstoneToggleHandler ComponentHandler(a_World);
+			static thread_local cRedstoneToggleHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		case E_BLOCK_BLOCK_OF_REDSTONE:
 		{
-			static cRedstoneBlockHandler ComponentHandler(a_World);
+			static thread_local cRedstoneBlockHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		case E_BLOCK_COMMAND_BLOCK:
 		{
-			static cCommandBlockHandler ComponentHandler(a_World);
+			static thread_local cCommandBlockHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		case E_BLOCK_NOTE_BLOCK:
 		{
-			static cNoteBlockHandler ComponentHandler(a_World);
+			static thread_local cNoteBlockHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		case E_BLOCK_REDSTONE_WIRE:
 		{
-			static cRedstoneWireHandler ComponentHandler(a_World);
+			static thread_local cRedstoneWireHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		case E_BLOCK_TNT:
 		{
-			static cTNTHandler ComponentHandler(a_World);
+			static thread_local cTNTHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		case E_BLOCK_TRAPPED_CHEST:
 		{
-			static cTrappedChestHandler ComponentHandler(a_World);
+			static thread_local cTrappedChestHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		case E_BLOCK_TRIPWIRE_HOOK:
 		{
-			static cTripwireHookHandler ComponentHandler(a_World);
+			static thread_local cTripwireHookHandler ComponentHandler(a_World);
 			return &ComponentHandler;
 		}
 		default:
 		{
 			if (cBlockDoorHandler::IsDoorBlockType(a_BlockType))
 			{
-				static cDoorHandler ComponentHandler(a_World);
+				static thread_local cDoorHandler ComponentHandler(a_World);
 				return &ComponentHandler;
 			}
 
 			if (cBlockInfo::FullyOccupiesVoxel(a_BlockType))
 			{
-				static cSolidBlockHandler ComponentHandler(a_World);
+				static thread_local cSolidBlockHandler ComponentHandler(a_World);
 				return &ComponentHandler;
 			}
 			return nullptr;
