@@ -547,10 +547,15 @@ bool cPluginLua::OnLogin(cClientHandle & a_Client, UInt32 a_ProtocolVersion, con
 
 
 
-bool cPluginLua::OnMonsterIdle(cMonster & a_Monster, UInt32 uniqueId)
+bool cPluginLua::OnMonsterIdle(cMonster & a_Monster)
 {
-    return CallSimpleHooks(cPluginManager::HOOK_MONSTER_IDLE, &a_Monster, uniqueId);
+    return CallSimpleHooks(cPluginManager::HOOK_MONSTER_IDLE, &a_Monster);
 }
+
+
+
+
+
 bool cPluginLua::OnPlayerAnimation(cPlayer & a_Player, int a_Animation)
 {
 	return CallSimpleHooks(cPluginManager::HOOK_PLAYER_ANIMATION, &a_Player, a_Animation);

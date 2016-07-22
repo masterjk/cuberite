@@ -287,7 +287,7 @@ public:
 	bool CallHookWeatherChanging          (cWorld & a_World, eWeather & a_NewWeather);
 	bool CallHookWorldStarted             (cWorld & a_World);
 	bool CallHookWorldTick                (cWorld & a_World, std::chrono::milliseconds a_Dt, std::chrono::milliseconds a_LastTickDurationMSec);
-    bool CallHookMonsterIdle              (cMonster & a_Monster, UInt32 uniqueId);
+    bool CallHookMonsterIdle              (cMonster & a_Monster);
 
 	/** Queues the specified plugin to be unloaded in the next call to Tick().
 	Note that this function returns before the plugin is unloaded, to avoid deadlocks. */

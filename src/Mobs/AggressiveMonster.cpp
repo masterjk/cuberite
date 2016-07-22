@@ -61,9 +61,9 @@ void cAggressiveMonster::Tick(std::chrono::milliseconds a_Dt, cChunk & a_Chunk)
 	}
 	else
 	{
-	    if (time(0) - LastCheck > 5)
+	    if (time(0) - LastCheck > 2)
 	    {
-            cPluginManager::Get()->CallHookMonsterIdle(*this, GetUniqueID());
+            cPluginManager::Get()->CallHookMonsterIdle(*this);
             LastCheck = time(0);
 	    }
 	}
@@ -102,3 +102,4 @@ bool cAggressiveMonster::Attack(std::chrono::milliseconds a_Dt)
 
 	return true;
 }
+
