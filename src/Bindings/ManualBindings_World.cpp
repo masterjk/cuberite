@@ -635,6 +635,27 @@ static int tolua_cWorld_TryGetHeight(lua_State * tolua_S)
 }
 
 
+static int tolua_cMonster_SetTarget(lua_State * tolua_S)
+{
+	// Exported manually, because tolua would generate useless additional return values (a_Line1 .. a_Line4)
+
+	// Check params:
+	cLuaState L(tolua_S);
+
+	// Get params:
+	cMonster * Self = nullptr;
+    cPawn * Pawn = nullptr;
+	L.GetStackValues(1, Self, Pawn);
+	if (Self == nullptr)
+	{
+		return cManualBindings::lua_do_error(tolua_S, "Error in function call '#funcname#': Invalid 'self'");
+	}
+
+	// Call the function:
+	Self->SetTarget(Pawn);
+
+	return 1;
+}
 
 
 
@@ -683,5 +704,13 @@ void cManualBindings::BindWorld(lua_State * tolua_S)
 }
 
 
+void cManualBindings::BindMonster(lua_State * tolua_S)
+{
+	tolua_beginmodule(tolua_S, nullptr);
+		tolua_beginmodule(tolua_S, "cMonster");
+            tolua_function(tolua_S, "SetTarget",                  tolua_cMonster_SetTarget);
+    	tolua_endmodule(tolua_S);
+	tolua_endmodule(tolua_S);
+}
 
 

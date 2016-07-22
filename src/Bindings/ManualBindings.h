@@ -41,6 +41,8 @@ protected:
 	Implemented in ManualBindings_World.cpp. */
 	static void BindWorld(lua_State * tolua_S);
 
+    static void BindMonster(lua_State * tolua_S);
+
 
 public:
 	// Helper functions:

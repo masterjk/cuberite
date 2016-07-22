@@ -3932,6 +3932,7 @@ void cManualBindings::Bind(lua_State * tolua_S)
 		BindNetwork(tolua_S);
 		BindRankManager(tolua_S);
 		BindWorld(tolua_S);
+        BindMonster(tolua_S);
 
 	tolua_endmodule(tolua_S);
 }
