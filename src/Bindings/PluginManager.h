@@ -26,6 +26,7 @@ class cPlugin;
 class cProjectileEntity;
 class cWorld;
 class cSettingsRepositoryInterface;
+class cAggressiveMonster;
 struct TakeDamageInfo;
 
 typedef SharedPtr<cPlugin> cPluginPtr;
@@ -100,6 +101,7 @@ public:
 		HOOK_KILLED,
 		HOOK_KILLING,
 		HOOK_LOGIN,
+		HOOK_MONSTER_IDLE,
 		HOOK_PLAYER_BREAKING_BLOCK,
 		HOOK_PLAYER_BROKEN_BLOCK,
 		HOOK_PLAYER_DESTROYED,
@@ -285,6 +287,7 @@ public:
 	bool CallHookWeatherChanging          (cWorld & a_World, eWeather & a_NewWeather);
 	bool CallHookWorldStarted             (cWorld & a_World);
 	bool CallHookWorldTick                (cWorld & a_World, std::chrono::milliseconds a_Dt, std::chrono::milliseconds a_LastTickDurationMSec);
+    bool CallHookMonsterIdle              (cMonster & a_Monster, UInt32 uniqueId);
 
 	/** Queues the specified plugin to be unloaded in the next call to Tick().
 	Note that this function returns before the plugin is unloaded, to avoid deadlocks. */

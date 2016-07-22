@@ -11,6 +11,7 @@ class cAggressiveMonster :
 	public cMonster
 {
 	typedef cMonster super;
+    time_t LastCheck;
 
 public:
 

@@ -82,6 +82,7 @@ public:
 
 	virtual void EventLosePlayer(void);
 	virtual void CheckEventLostPlayer(void);
+	virtual void CheckEventLostVillager(void);
 
 	virtual void InStateIdle    (std::chrono::milliseconds a_Dt, cChunk & a_Chunk);
 	virtual void InStateChasing (std::chrono::milliseconds a_Dt, cChunk & a_Chunk);

@@ -1525,6 +1525,20 @@ bool cPluginManager::CallHookWorldTick(cWorld & a_World, std::chrono::millisecon
 
 
 
+bool cPluginManager::CallHookMonsterIdle(cMonster & a_Monster, UInt32 uniqueId)
+{
+    FIND_HOOK(HOOK_MONSTER_IDLE);
+	VERIFY_HOOK;
+
+	for (PluginList::iterator itr = Plugins->second.begin(); itr != Plugins->second.end(); ++itr)
+	{
+		if ((*itr)->OnMonsterIdle(a_Monster, uniqueId))
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
 cPluginManager::CommandResult cPluginManager::HandleCommand(cPlayer & a_Player, const AString & a_Command, bool a_ShouldCheckPermissions)
 {

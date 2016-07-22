@@ -608,6 +608,13 @@ void cMonster::CheckEventLostPlayer(void)
 
 
 
+void cMonster::CheckEventLostVillager(void)
+{
+	if (GetTarget() == nullptr)
+	{
+    	m_EMState = IDLE;
+	}
+}
 
 
 // What to do if player is seen

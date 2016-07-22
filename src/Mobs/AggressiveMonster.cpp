@@ -6,6 +6,7 @@
 #include "../World.h"
 #include "../Entities/Player.h"
 #include "../Tracer.h"
+#include "../Bindings/PluginManager.h"
 
 
 
@@ -15,6 +16,7 @@ cAggressiveMonster::cAggressiveMonster(const AString & a_ConfigName, eMonsterTyp
 	super(a_ConfigName, a_MobType, a_SoundHurt, a_SoundDeath, a_Width, a_Height)
 {
 	m_EMPersonality = AGGRESSIVE;
+    LastCheck = time(0);
 }
 
 
@@ -55,11 +57,15 @@ void cAggressiveMonster::Tick(std::chrono::milliseconds a_Dt, cChunk & a_Chunk)
 
 	if (m_EMState == CHASING)
 	{
-		CheckEventLostPlayer();
+		CheckEventLostVillager();
 	}
 	else
 	{
-		CheckEventSeePlayer(a_Chunk);
+	    if (time(0) - LastCheck > 5)
+	    {
+            cPluginManager::Get()->CallHookMonsterIdle(*this, GetUniqueID());
+            LastCheck = time(0);
+	    }
 	}
 
 	if (GetTarget() == nullptr)
